@@ -15,16 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path , include
-#from main import views as mainViews
-#from notice import views as noticeViews
-#from user import views as userViews
+from main_2 import views as main_2Views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('notice/', noticeViews.notice_list, name = 'notice_list' ),
-    #path('notice/detail', noticeViews.notice_search, name = 'notice_search' ),
-    #path('user/regist/', userViews.user_regist, name = 'user_regist' ),
-    #path('', mainViews.move_main, name = 'move_main' ),
-    path('',include('main.urls'))
+    path('',include('main.urls')),
+    path('main_2/', main_2Views.move_main, name = 'move_main' ),
+    path('notice_2/', main_2Views.notice_list, name = 'notice_list' ),
+    path('notice_2/detail',main_2Views.notice_search, name = 'notice_search' ),
+    path('user_2/regist/', main_2Views.user_regist, name = 'user_regist' ),
 ]
