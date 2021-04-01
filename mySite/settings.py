@@ -25,8 +25,8 @@ SECRET_KEY = '9=y2-7o18opi08pxcp+zt7pi08+0hpje+4^d5u(ahyc3dx1%+1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost']
-
+ALLOWED_HOSTS = ['127.0.0.1','192.168.2.20','localhost','[::1]']
+#ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main.apps.MainConfig',
     'main_2',
+    'jquery',
+    'django_ajax',
 ]
 
 MIDDLEWARE = [
@@ -78,7 +80,7 @@ WSGI_APPLICATION = 'mySite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kotech_cisco_cms',
+        'NAME': 'jango_test123',
         'USER': 'cmsuser',
         'PASSWORD': 'cmsuser',
         'HOST': '182.237.86.248',
@@ -124,3 +126,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    '/static/js/',
+]

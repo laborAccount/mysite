@@ -5,5 +5,5 @@ urlpatterns = [
     path('notice/', views.notice_list, name = 'notice_list' ),
     path('notice/detail',views.notice_search, name = 'notice_search' ),
     path('user/regist/', views.user_regist, name = 'user_regist' ),
-
+    path('user/regist/insert', views.user_insert, name = 'user_insert' ),
 ]
