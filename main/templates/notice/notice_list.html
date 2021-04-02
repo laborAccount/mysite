@@ -1,28 +1,84 @@
 <!DOCTYPE html>
+
+<style>
+  
+  table {
+    width: 100%;
+    border: 1px solid #444444;
+  }
+  th, td {
+    border: 1px solid #444444;
+  }
+</style>
+
+
+
 <html>
+ 
+
   <head>
+    {% load static %}
+    <script src="{% static '/js/jquery-3.6.0.min.js' %}"></script> 
+
     <meta charset="utf-8">
   </head>
+ 
   <body>
       /* 공지사항 리스트 */
-      <input type="hidden" value="{{ user_id }}"/>
+      <form name="list_form" id="list_form" method="POST">
+        {% csrf_token %}
+        <input type="hidden" value="{{ user_id }}"/>
+      </form>
+      
 
       <table id="noti_list_table">
         <thead>
           <tr>
+            <th>
+              <input type="checkbox" name='entire_chk_btn'/> 
+            </th>
             <th>번호</th>
-            <th>등록아이디</th>
             <th>제목</th>
             <th>등록일시</th>
           </tr>
         </thead>
         <tbody>
-
-
-
+          {% for noti in noti_list %}
+            <tr>
+              <td style="text-align: center;"><input type="checkbox" name='chk_btn' id='chk_btn{{ noti.id }}'/></td>
+              <td>{{noti.id}}</td>
+              <td><a href="javascript:void(0)" role="noti_detail" data-seq = '{{noti.id}}' >{{noti.notice_subject}}</a></td>
+              <td>{{noti.regist_dt}}</td>
+            </tr>
+          {% endfor %}
         </tbody>
       </table>
 
-
+      <button name="write_notice" id="write_notice">글쓰기</button>
+      <button name="delete_notice" id="delete_notice">삭제하기</button>
   </body>
+
+  <script type="text/javascript">
+    $("#write_notice").click(function(){
+      //dom 이용 요청 추가 방법 1
+      document.list_form.action = "{% url 'notice_write'  %}"
+      document.list_form.submit();
+    });
+
+    $("#delete_notice").click(function(){
+
+
+
+    });
+
+    $("a[role='noti_detail']").on('click',function(){
+        id = $(this).data("seq");
+        //document.location.href = "{% url 'notice_search' %}" + "?id="+id;
+        document.location.href = "/notice/detail?id="+id;
+    });
+
+  </script>
+
+
 </html>
+

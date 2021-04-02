@@ -16,7 +16,6 @@ class Test_User_Info(models.Model):
 
 
 class Test_Notice(models.Model):
-    regist_id = models.ForeignKey(Test_User_Info, on_delete=models.CASCADE)
     notice_subject = models.CharField(max_length = 50)
     notice_memo = models.CharField(max_length = 3000)
     regist_dt = models.DateField()

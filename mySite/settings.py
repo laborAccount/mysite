@@ -131,3 +131,5 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
     '/static/js/',
 ]
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
