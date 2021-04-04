@@ -23,6 +23,7 @@
     <form id="notice_detail_form" method="POST">
       {% csrf_token %}
       <table id="notice_detail" name="notice_detail">
+        <input type="hidden" name="id" id="id" value="{{noti.id}}"/>
         <tbody>
           <!--
           <tr>
@@ -41,12 +42,17 @@
 
           <tr>
             <td>내용</td>
-            <td><textarea id="notice_memo" name="notice_memo"></textarea></td>
+              {% if request_form == 'search' %}
+              <td><textarea id="notice_memo" name="notice_memo">{{noti.notice_memo}}</textarea></td>
+              {% elif request_form == 'write' %}
+              <td><textarea id="notice_memo" name="notice_memo"></textarea></td>
+              {% endif %}
           </tr>
 
           <tr>
             <td>등록일시</td>
-            <td><input type="text" id="regist_dt" name="regist_dt"/></td>
+            
+            <td><input type="text" id="regist_dt" readonly name="regist_dt" value='{{noti.regist_dt|date:"Y-m-d"}}'/></td>
           </tr>
           
         </tbody>
@@ -60,8 +66,15 @@
 
   <script type="text/javascript">
     $("#submit_btn").click(function(){
-      $("#notice_detail_form").attr("action","{% url 'notice_save' %}");  
-      $("#notice_detail_form").submit();
+      let active = "{{request_form}}"
+
+      if(active == 'write'){
+        $("#notice_detail_form").attr("action","{% url 'notice_save' %}");  
+        $("#notice_detail_form").submit();
+      }else if(active = 'search'){
+        $("#notice_detail_form").attr("action","{% url 'notice_update' %}");  
+        $("#notice_detail_form").submit();
+      }
     });
     $("#move_list_page").click(function(){
       

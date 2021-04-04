@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from main.models import *
+from datetime import datetime
+from django.db import connection
 # Create your views here.
 # main page 이동
 def move_main(request):
@@ -51,7 +53,12 @@ def notice_write(request):
     #if session_user_id is None or session_user_id =="" :
     #    return render( request, 'notice/notice_list.html')
     #
-    context = {'request_form':'write'}
+    now = datetime.now()
+    print("now -->" ,now)
+    noti = Test_Notice()
+    noti.regist_dt = now
+    print("noti.regist_dt -->" , noti.regist_dt)
+    context = {'request_form':'write', 'noti' : noti}
     return render( request, 'notice/notice_detail.html',context)
 
 def notice_save(request):
@@ -66,10 +73,60 @@ def notice_save(request):
     print('@@ notice_memo =>', notice_memo)
     print('@@ regist_dt =>', regist_dt)
 
-    noti = Test_Notice(regist_id, notice_subject , notice_memo, regist_dt )
+    #noti = Test_Notice(notice_subject , notice_memo, regist_dt )\
+    noti = Test_Notice()
+    noti.notice_subject = notice_subject
+    noti.notice_memo =notice_memo
+    noti.regist_dt = regist_dt
     print('@@ noti =>', noti)
     noti.save()
-    return render(request ,'notice/notice_list.html')
+
+    noti_list = Test_Notice.objects.all()
+    context = {'noti_list' : noti_list}
+    print("context -> " , context)
+
+    return render(request ,'notice/notice_list.html',context)
+
+
+def notice_update(request):
+    id = request.POST.get("id")
+    notice_subject = request.POST.get("notice_subject")
+    notice_memo = request.POST.get("notice_memo")
+    regist_dt = request.POST.get("regist_dt")
+
+    noti = Test_Notice.objects.get(pk=id)
+    noti.notice_subject = notice_subject
+    noti.notice_memo = notice_memo
+    noti.regist_dt = regist_dt
+
+    noti.save()
+
+    noti_list = Test_Notice.objects.all()
+    context = {'noti_list' : noti_list}
+    print("context -> " , context)
+    return render(request ,'notice/notice_list.html',context)
+
+def notice_delete(request):
+
+    ids = request.POST.getlist("del_ids");
+    print("ids -> ", ids)
+
+    #noti_list.filter(id=ids).delete()
+    #for notice in noti_list :
+    #    print("notice.id -->", notice.id)
+    #    print("ids(0)-->",ids[0] )
+    #    if notice.id in ids :
+    #       print("delete!! -->" , notice.id)
+    #       notice.objects.delete()
+
+    cursor = connection.cursor()
+    cursor.execute(
+        'DELETE FROM Main_Test_Notice WHERE id IN (%s)' % ', '.join(ids)
+    )
+    noti_list = Test_Notice.objects.all()
+    context = {'noti_list' : noti_list}
+    print("context -> " , context)
+    return render(request, 'notice/notice_list.html', context)
 
 
 def user_regist(request):

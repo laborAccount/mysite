@@ -45,7 +45,7 @@
         <tbody>
           {% for noti in noti_list %}
             <tr>
-              <td style="text-align: center;"><input type="checkbox" name='chk_btn' id='chk_btn{{ noti.id }}'/></td>
+              <td style="text-align: center;"><input type="checkbox" name='chk_btn' data-id="{{noti.id}}" id='chk_btn{{ noti.id }}'/></td>
               <td>{{noti.id}}</td>
               <td><a href="javascript:void(0)" role="noti_detail" data-seq = '{{noti.id}}' >{{noti.notice_subject}}</a></td>
               <td>{{noti.regist_dt}}</td>
@@ -66,8 +66,20 @@
     });
 
     $("#delete_notice").click(function(){
+      $("input:checkbox[name=chk_btn]").each(function(){
+        if($(this).is(":checked") == true) {
+          let $chk_node = $("<input type='hidden' name='del_ids' id='del_ids"+ $(this).data('id') +"' value='"+ $(this).data('id') +"' >");
+          $("#list_form").append($chk_node)
+        }
+      });
 
+      $("input[name='del_ids']").each(function(){
+        console.log("chk_items-->",$(this).val());
+      });
 
+      
+      $("#list_form").attr("action","{% url 'notice_delete'  %}");
+      $("#list_form").submit();
 
     });
 
@@ -76,6 +88,8 @@
         //document.location.href = "{% url 'notice_search' %}" + "?id="+id;
         document.location.href = "/notice/detail?id="+id;
     });
+
+
 
   </script>
 
