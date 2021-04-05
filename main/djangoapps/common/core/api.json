@@ -1,0 +1,50 @@
+{
+    "api": [
+        {
+            "api_list": [
+                {
+                    "ipAddress": "14.63.53.22",
+                    "max_callLeg_total": "500",
+                    "password": "Etechsystem",
+                    "port": "449",
+                    "seq": "0",
+                    "serverName": "api_server_1",
+                    "useHttps": "True",
+                    "userName": "admin"
+                },
+                {
+                    "ipAddress": "14.63.53.22",
+                    "max_callLeg_total": "500",
+                    "password": "Etechsystem",
+                    "port": "449",
+                    "seq": "1",
+                    "serverName": "api_server_2",
+                    "useHttps": "True",
+                    "userName": "admin"
+                }
+            ],
+            "group_name": "cluster1",
+            "group_seq": "0"
+        }
+    ],
+    "callcommand": {
+        "presentationContributionAllowed": "false",
+        "presentationViewingAllowed": "true",
+        "rxAudioMute": "true",
+        "rxVideoMute": "true",
+        "txAudioMute": "true",
+        "txVideoMute": "true",
+        "videoMode": "false"
+    },
+    "settings": {
+        "callLicense": "5",
+        "cms_version": "240",
+        "default_bandwidth": "384000",
+        "default_lang": "ko",
+        "filter": "cb",
+        "invite_confirm": "false",
+        "main_list_timer": "10000",
+        "overrideParticipantName": "true",
+        "recording": "true"
+    }
+}

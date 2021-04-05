@@ -1,0 +1,54 @@
+{
+  "v2.8": {
+    "calls": {
+      "GET":["offset","limit","coSpaceFilter","tenantFilter"],
+      "POST":["coSpace","name","callCorrelator","callId","locked","recording","streaming","allowAllMuteSelf","allowAllPresentationContribution",
+        "joinAudioMuteOverride","messageText","messagePosition","messageDuration","activeWhenEmpty","panePlacementHighestImportance",
+        "panePlacementSelfPaneMode"
+      ],
+      "PUT":["coSpace","name","callCorrelator","callId","locked","recording","streaming","allowAllMuteSelf","allowAllPresentationContribution",
+        "joinAudioMuteOverride","messageText","messagePosition","messageDuration","activeWhenEmpty","panePlacementHighestImportance",
+        "panePlacementSelfPaneMode"
+      ],
+      "DELETE":[]
+    },
+    "coSpaces": {
+      "GET":["offset","limit","filter","tenantFilter","callLegProfileFilter"],
+      "POST":["name","uri","secondaryUri","callId","cdrTag","passcode","defaultLayout","tenant","callLegProfile","callProfile","callBrandingProfile",
+        "requireCallId","secret","regenerateSecret","nonMemberAccess","ownerJid","streamUrl","ownerAdGuid","meetingScheduler","panePlacementHighestImportance",
+        "panePlacementSelfPaneMode"
+      ],
+      "PUT":["name","uri","secondaryUri","callId","cdrTag","passcode","defaultLayout","tenant","callLegProfile","callProfile","callBrandingProfile",
+        "requireCallId","secret","regenerateSecret","nonMemberAccess","ownerJid","streamUrl","ownerAdGuid","meetingScheduler","panePlacementHighestImportance",
+        "panePlacementSelfPaneMode"
+      ],
+      "DELETE":[]
+    },
+    "callLegs":{
+      "GET":["offset","limit","filter","participantFilter","tenantFilter","activeLayoutFilter","availableVideoStreamsLowerBound",
+        "availableVideoStreamsUpperBound","ownerIdSet","alarms"
+      ],
+      "POST":["remoteParty","bandwidth","confirmation","ownerId","chosenLayout","dtmfSequence","callLegProfile",
+        "needsActivation","defaultLayout","participantLabels","presentationDisplayMode","presentationContributionAllowed",
+        "presentationViewingAllowed","endCallAllowed","muteOthersAllowed","videoMuteOthersAllowed","muteSelfAllowed",
+        "videoMuteSelfAllowed","changeLayoutAllowed","joinToneParticipantThreshold","leaveToneParticipantThreshold","videoMode",
+        "rxAudioMute","txAudioMute","rxVideoMute","txVideoMute","sipMediaEncryption","audioPacketSizeMs","deactiviationMode","deactivationModeTime",
+        "telepresenceCallsAllowed","sipPresentationChannelEnabled","bfcpMode","layout","disconnectOthersAllowed","addParticipantAllowed",
+        "qualityMain","qualityPresentation","participantCounter","nameLabelOverride","controlRemoteCameraAllowed","layoutTemplate","audioGainMode"],
+      "PUT":["remoteParty","bandwidth","confirmation","ownerId","chosenLayout","dtmfSequence","callLegProfile",
+        "needsActivation","defaultLayout","participantLabels","presentationDisplayMode","presentationContributionAllowed",
+        "presentationViewingAllowed","endCallAllowed","muteOthersAllowed","videoMuteOthersAllowed","muteSelfAllowed",
+        "videoMuteSelfAllowed","changeLayoutAllowed","joinToneParticipantThreshold","leaveToneParticipantThreshold","videoMode",
+        "rxAudioMute","txAudioMute","rxVideoMute","txVideoMute","sipMediaEncryption","audioPacketSizeMs","deactiviationMode","deactivationModeTime",
+        "telepresenceCallsAllowed","sipPresentationChannelEnabled","bfcpMode","layout","disconnectOthersAllowed","addParticipantAllowed",
+        "qualityMain","qualityPresentation","participantCounter","nameLabelOverride","controlRemoteCameraAllowed","layoutTemplate","audioGainMode"],
+      "DELETE":[]
+    },
+    "participants":{
+      "GET":["filter","offset","limit","tenantFilter","callBridgeFilter"],
+      "POST":[],
+      "PUT":["importance","dtmfSequence","nameLabelOverride"],
+      "DELETE":[]
+    }
+  }
+}

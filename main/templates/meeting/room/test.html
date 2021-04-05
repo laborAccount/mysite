@@ -1,0 +1,276 @@
+
+
+<div class="content-header white box-shadow-0" id="content-header">
+  <div class="navbar navbar-expand-lg">
+    <div class="navbar-text nav-title flex" id="pageTitle">${_("메뉴.제목.미팅룸")}</div>
+  </div>
+</div>
+
+<div class="padding">
+  
+  <div class="row">
+    <div class="tm-div tm-main col-sm-12" id="listDiv">
+      <div class="box box-body">
+        <div class="table-responsive">
+          <table class="table table-striped v-middle p-0 m-0 box dataTable no-footer table_mr" id="table_mr">
+            <thead>
+            <tr>
+              <th class="text-center"></th>
+              <th class="text-center">${_("라벨.미팅룸.미팅룸이름")}</th>
+              <th class="text-center">${_("라벨.미팅룸.uri")}</th>
+              <th class="text-center">${_("라벨.미팅룸.callid")}</th>
+              <th class="text-center">Role</th>
+              <th class="text-center">${_("라벨.공통.그룹이름")}</th>
+              <th class="text-center">${_("라벨.공통.그룹번호")}</th>
+              <th class="text-center">VIEW</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="tm-div deactive" id="inputDiv">
+      <div class="box">
+        <div class="box-header">
+          <h2 class="dis-inline-block">${_("라벨.미팅룸.미팅룸정보")}</h2>
+          <span class="btn-layerClose tm-btn-close">X</span>
+        </div>
+        <div class="box-divider m-0"></div>
+        <div class="box-body">
+          
+          <div class="form-group deactive">
+            <label><span class="redstar"></span></label>
+            <input type="text" class="form-control" id="mm_id" data-key="@id">
+          </div>
+
+          <div class="form-group">
+            <label for="mr_name"><span class="redstar">${_("라벨.미팅룸.미팅룸이름")}</span></label>
+            <input type="text" class="form-control" id="mr_name" data-key="name" placeholder='${_("라벨.미팅룸.미팅룸이름")}' data-validation="required|maxlength(100)">
+          </div>
+
+          <div class="form-group">
+            <label for="mr_callId"><span class="redstar">${_("라벨.미팅룸.callid")}</span></label>
+            <input type="text" class="form-control" id="mr_callId" data-key="callId" placeholder='${_("라벨.미팅룸.callid")}' data-validation="required|maxlength(100)">
+          </div>
+
+          <div class="form-group">
+            <label for="mr_uri">${_("라벨.미팅룸.uri")}</label>
+            <input type="text" class="form-control" id="mr_uri" data-key="uri" placeholder='${_("라벨.미팅룸.uri")}' data-validation="maxlength(100)">
+          </div>
+
+          <div class="form-group">
+            <label for="mr_passcode">${_("라벨.미팅룸.패스워드")}</label>
+            <input type="text" class="form-control" id="mr_passcode" data-key="passcode" placeholder='${_("라벨.미팅룸.패스워드")}' data-validation="maxlength(100)">
+          </div>
+
+          <div class="form-group">
+            <span><label>${_("라벨.미팅룸.기본레이아웃")}</label></span>
+            <select class="form-control custom-select" id="mr_defaultLayout" data-key="defaultLayout">
+              <option value="">Not Set</option>
+              <option value="allEqual">AllEqual</option>
+              <option value="allEqualQuarters">All Equal Quarters</option>
+              <option value="allEqualNinths">All Equal Ninths</option>
+              <option value="allEqualSixteenths">All Equal Sixteenths</option>
+              <option value="allEqualTwentyFifths">All Equal TwentyFifths</option>
+              <option value="speakerOnly">Speaker Only</option>
+              <option value="telepresence">Telepresence</option>
+              <option value="stacked">Stacked</option>
+              <option value="automatic">Automatic</option>
+              <option value="onePlusFive">One Plus Five</option>
+              <option value="onePlusSeven">One Plus Seven</option>
+              <option value="onePlusNine">One Plus Nine</option>
+              <option value="onePlusN">One Plus N</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <span><label>${_("라벨.공통.그룹이름")}</label></span>
+            <select class="form-control custom-select tm-group" id="mr_group_select" data-key="group_seq"></select>
+          </div>
+
+          <div class="form-group">
+            <span><label>${_("라벨.공통.서버이름")}</label></span>
+            <select class="form-control custom-select tm-server" id="mr_serverName_select" data-key="server_seq"></select>
+          </div>
+
+          <div class="checkbox">
+            <label class="ui-check">
+              <input type="checkbox" id="advanceOption"><i></i> ${_("라벨.공통.상세설정")}
+            </label>
+          </div>
+
+          <div id="advancedDiv" class="mt-2 deactive">
+            
+            <div class="form-group">
+              <label>${_("라벨.미팅룸.셀프뷰모드")}</label>
+              <select class="form-control custom-select" id="mr_panePlacementSelfPaneMode" data-key="panePlacementSelfPaneMode">
+                <option value="self">Self</option>
+                <option value="skip">Skip</option>
+                <option value="blank">Blank</option>
+                <option value="">None</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="mr_panePlacementHighestImportance">${_("라벨.미팅룸.panePlacementHighestImportance")}</label>
+              <input type="text" class="form-control" id="mr_panePlacementHighestImportance" placeholder='${_("라벨.미팅룸.panePlacementHighestImportance")}' data-key="panePlacementHighestImportance">
+            </div> 
+            
+            <div class="form-group">
+              <label>${_("라벨.미팅룸.secondaryuri")}</label>
+              <input type="text" class="form-control" id="mr_secondaryUri" placeholder='${_("라벨.미팅룸.secondaryuri")}' data-key="secondaryUri">
+            </div>
+
+            <div class="form-group">
+              <label>${_("라벨.미팅룸.템플릿")}</label>
+              <select id="mr_template_select" class="form-control custom-select tm-template" data-key="template"></select>
+            </div>
+
+            <div class="form-group">
+              <label>${_("라벨.미팅룸.cdrtag")}</label>
+              <input type="text" class="form-control" id="mr_cdrTag" placeholder='${_("라벨.미팅룸.cdrtag")}' data-key="cdrTag">
+            </div>
+
+            <div class="form-group">
+              <label>${_("라벨.미팅룸.ownerjid")}</label>
+              <input type="text" class="form-control" id="mr_ownerJid" placeholder='${_("라벨.미팅룸.ownerjid")}' data-key="ownerJid">
+            </div>
+
+            <div class="form-group">
+              <label>${_("라벨.미팅룸.streamurl")}</label>
+              <input type="text" class="form-control" id="mr_streamUrl" placeholder='${_("라벨.미팅룸.streamurl")}' data-key="streamUrl">
+            </div>
+
+            <div class="form-group">
+              <label>${_("라벨.미팅룸.owneradguid")}</label>
+              <input type="text" class="form-control" id="mr_ownerAdGuid" placeholder='${_("라벨.미팅룸.owneradguid")}' data-key="ownerAdGuid">
+            </div>
+
+            <div class="form-group">
+              <label>${_("라벨.미팅룸.meetingscheduler")}</label>
+              <input type="text" class="form-control" id="mr_meetingScheduler" placeholder='${_("라벨.미팅룸.meetingscheduler")}' data-key="meetingScheduler">
+            </div>
+          </div>
+
+          <div class="text-center">
+            <button class="btn primary" id="btn_save">${_("버튼.공통.저장")}</button>
+            <button class="btn danger" id="btn_start">${_("버튼.미팅룸.시작")}</button>
+            <button class="btn warning" id="btn_clear">${_("버튼.공통.초기화")}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <!-- -->
+    <div class="tm-div col-sm-12 deactive" id="promptDiv">
+      <div class="box box-body">
+
+        <div class="p-b-5">
+          <button class="btn btn-outline b-warning text-warning" id="btn_back">${_("버튼.공통.뒤로가기")}</button>
+          <button class="btn btn-outline b-primary text-primary float-r" id="btn_prompt_start">${_("버튼.미팅룸.미팅시작")}</button>
+        </div>
+
+        <div>
+          <div class="box-header">
+            <h2>${_("라벨.미팅룸.미팅룸정보")}</h2>
+          </div>
+          <div class="box-divider m-0"></div>
+          <div class="box-body">
+
+            <div class="form-group row">
+              <label for="prompt_name" class="col-sm-1 col-form-label"><span class="redstar">${_("라벨.미팅룸.미팅룸이름")}</span></label>
+              <div class="col-sm-5">
+                <input type="text" class="form-control" id="prompt_name" placeholder='${_("라벨.미팅룸.미팅룸이름")}' data-key="name" data-required="true">
+              </div>
+              <label for="prompt_callid" class="col-sm-1 col-form-label"><span class="redstar">${_("라벨.미팅룸.callid")}</span></label>
+              <div class="col-sm-5">
+                <input type="text" class="form-control" id="prompt_callid" placeholder='${_("라벨.미팅룸.callid")}' data-key="callId" data-required="true">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="prompt_passcode" class="col-sm-1 col-form-label">${_("라벨.미팅룸.패스워드")}</label>
+              <div class="col-sm-5">
+                <input type="text" class="form-control" id="prompt_passcode" data-key="passcode" placeholder='${_("라벨.미팅룸.패스워드")}'>
+              </div>
+              <label for="prompt_uri" class="col-sm-1 col-form-label">${_("라벨.미팅룸.uri")}</label>
+              <div class="col-sm-5">
+                <input type="text" class="form-control" id="prompt_uri" data-key="uri" placeholder='${_("라벨.미팅룸.uri")}' data-required="true">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="prompt_defaultLayout" class="col-sm-1 col-form-label">${_("라벨.미팅룸.기본레이아웃")}</label>
+              <div class="col-sm-5">
+                <select id="prompt_defaultLayout" class="custom-select w-100" data-key="defaultLayout">
+                  <option value="">Not Set</option>
+                  <option value="allEqual">AllEqual</option>
+                  <option value="allEqualQuarters">All Equal Quarters</option>
+                  <option value="allEqualNinths">All Equal Ninths</option>
+                  <option value="allEqualSixteenths">All Equal Sixteenths</option>
+                  <option value="allEqualTwentyFifths">All Equal TwentyFifths</option>
+                  <option value="speakerOnly">Speaker Only</option>
+                  <option value="telepresence">Telepresence</option>
+                  <option value="stacked">Stacked</option>
+                  <option value="automatic">Automatic</option>
+                  <option value="onePlusFive">One Plus Five</option>
+                  <option value="onePlusSeven">One Plus Seven</option>
+                  <option value="onePlusNine">One Plus Nine</option>
+                  <option value="onePlusN">One Plus N</option>
+                </select>
+              </div>
+              <label for="prompt_uri" class="col-sm-1 col-form-label">${_("라벨.미팅룸.템플릿")}</label>
+              <div class="col-sm-5">
+                <select id="prompt_template_select" class="custom-select w-100 tm-template" data-key="template">
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="prompt_group_select" class="col-sm-1 col-form-label">${_("라벨.공통.그룹이름")}</label>
+              <div class="col-sm-5">
+                <select class="custom-select w-100 tm-group prompt" id="prompt_group_select" data-key="group_seq"></select>
+              </div>
+              <label for="prompt_serverName_select" class="col-sm-1 col-form-label">${_("라벨.공통.서버이름")}</label>
+              <div class="col-sm-5">
+                <select class="custom-select w-100 tm-server prompt" id="prompt_serverName_select" data-key="server_seq"></select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="prompt_panePlacementSelfPaneMode" class="col-sm-1 col-form-label">${_("라벨.미팅룸.셀프뷰모드")}</label>
+              <div class="col-sm-5">
+                <select class="custom-select w-100 prompt" id="prompt_panePlacementSelfPaneMode" data-key="panePlacementSelfPaneMode">
+                  <option value="self">Self</option>
+                  <option value="skip">Skip</option>
+                  <option value="blank">Blank</option>
+                  <option value="">None</option>
+                </select>
+              </div>
+              <label for="prompt_panePlacementHighestImportance" class="col-sm-1 col-form-label">${_("라벨.미팅룸.panePlacementHighestImportance")}</label>
+              <div class="col-sm-5">
+                <input type="text" class="form-control" id="prompt_panePlacementHighestImportance" data-key="panePlacementHighestImportance" placeholder='${_("라벨.미팅룸.panePlacementHighestImportance")}'>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="box box-body"> <!-- Invite DIV -->
+        <%include file="/common/invite_div.html"/>
+      </div>
+
+    </div>
+    <!-- -->
+  </div>
+
+
+</div>

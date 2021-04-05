@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from main.models import *
-from datetime import datetime
-from django.db import connection
+from django.db import connections
+from django.http import HttpResponse, JsonResponse
+from main.djangoapps.common.util import views as TMUtility
+
 # Create your views here.
 # main page 이동
 def move_main(request):

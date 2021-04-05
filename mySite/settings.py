@@ -71,18 +71,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mySite.wsgi.application'
 
+DATABASE_APPS_MAPPING = {'default': 'default',
+                         'multi_db': 'multi_db'}
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'jango_test123',
-        'USER': 'cmsuser',
-        'PASSWORD': 'cmsuser',
-        'HOST': '182.237.86.248',
-        'PORT': '3306',
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'jango_test123',
+            'USER': 'cmsuser',
+            'PASSWORD': 'cmsuser',
+            'HOST': '182.237.86.248',
+            'PORT': '3306',
     }
 }
 
