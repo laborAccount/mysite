@@ -118,12 +118,19 @@ def notice_delete(request):
     #    if notice.id in ids :
     #       print("delete!! -->" , notice.id)
     #       notice.objects.delete()
-
+    '''
     cursor = connection.cursor()
     cursor.execute(
         'DELETE FROM Main_Test_Notice WHERE id IN (%s)' % ', '.join(ids)
     )
+    '''
+    qs = Test_Notice.objects.filter(id__in = ids)
+    qs.delete()
+
     noti_list = Test_Notice.objects.all()
+
+
+
     context = {'noti_list' : noti_list}
     print("context -> " , context)
     return render(request, 'notice/notice_list.html', context)
