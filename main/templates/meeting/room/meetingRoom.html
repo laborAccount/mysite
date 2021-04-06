@@ -13,7 +13,9 @@
             <th>미팅룸 이름</th>
             <th>Uri</th>
             <th>Call ID</th>
+            <th>Role</th>
             <th>그룹 이름</th>
+            <th>그룹 번호</th>
             <th>VIEW</th>
           </tr>
         </thead>
@@ -25,7 +27,26 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
-      
+      _page = new page();
+      _page.init();
+
+      function page(){
+
+        this.init = function(){
+          _page.initList();
+
+
+        }
+
+        this.lnitList = function(){
+          
+
+
+
+        }
+
+      }
+
     });
 
 
