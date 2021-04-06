@@ -9,9 +9,9 @@ from djangoapps.common.util import views as TMUtility
 
 #공통 API
 from djangoapps.common.com.views import CiscoApi
-from backend.djangoapps.common.core.views import coreJson
+from djangoapps.common.core.views import coreJson
 
-from backend.models import CmsTemplate, CmsCospace
+from djangoapps.models import CmsTemplate, CmsCospace
 from django.db.models import Count, Q
 import asyncio,datetime
 import traceback
