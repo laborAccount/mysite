@@ -5,10 +5,10 @@ import asyncio
 from django.shortcuts import render
 from django.db import connections
 from django.http import HttpResponse, JsonResponse
-from backend.djangoapps.common.util import views as TMUtility
+from djangoapps.common.util import views as TMUtility
 
 #공통 API
-from backend.djangoapps.common.com.views import CiscoApi
+from djangoapps.common.com.views import CiscoApi
 from backend.djangoapps.common.core.views import coreJson
 
 from backend.models import CmsTemplate, CmsCospace
