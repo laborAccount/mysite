@@ -5,11 +5,11 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 from django.db import connections
 from django.conf import settings
-from backend.djangoapps.common.core.views import getAuthToken, getAuthTokenBasic
-from backend.djangoapps.common.core.views import getApiUrl, getApiUrlBasic
-from backend.djangoapps.common.core.views import getUseHttps, getUseHttpsBasic
-from backend.djangoapps.common.core.views import getErrorJson
-from backend.djangoapps.common.core.views import coreJson
+from main.djangoapps.common.core.views import getAuthToken, getAuthTokenBasic
+from main.djangoapps.common.core.views import getApiUrl, getApiUrlBasic
+from main.djangoapps.common.core.views import getUseHttps, getUseHttpsBasic
+from main.djangoapps.common.core.views import getErrorJson
+from main.djangoapps.common.core.views import coreJson
 import logging
 import logging.config
 # UTIL

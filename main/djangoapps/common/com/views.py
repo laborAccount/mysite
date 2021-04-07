@@ -12,7 +12,7 @@ import datetime
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # api 전체 서버 정보
-from backend.djangoapps.common.core.views import coreJson
+from main.djangoapps.common.core.views import coreJson
 
 import traceback
 import logging

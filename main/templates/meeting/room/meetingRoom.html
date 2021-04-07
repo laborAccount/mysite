@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     {% load static %}
     <script src="{% static '/js/jquery-3.6.0.min.js' %}"></script> 
+    <script src="{% static '/js/datatable.js' %}"></script> 
   </head>
   <body>
       <table id = "meeting_table">
@@ -38,11 +39,69 @@
 
         }
 
-        this.lnitList = function(){
+        this.initList = function(){
+          table_mr =  $("#meeting_table").DataTable({
+          searching: true,
+          paginate: true,
+          pageLength: 10,
+          processing: true,
+          serverSide: true,
+          ordering: false,
           
+          ajax: {
+            url: "/meetingroom/list", //데이터를 가져올 url
+            type: "POST",
+            dataType: "json",
+            data: {
+              'csrfmiddlewaretoken': $('.hidden_csrftoken').val(),
+            },
+            /* 사용될 필요없음.
+            ,
+            dataFilter: function (data) {
+              var json = jQuery.parseJSON(data);
+              console.log("return JSON DATA!!! ->",json);
+              return JSON.stringify(json);
+            }
+            */
+
+          },
+          columns: [
+              {data: "@id",fnCreatedCell:function(nTd, sData, oData, iRow, iCol){
+                  $(nTd).html($.dtcheckboxbs4());
+              }},
+              {data: "name"},
+              {data: "uri"},
+              {data: "callId"},
+              {data: "owner_yn"},
+              {data: "group_name"},
+              {data: "group_seq"},
+              {
+                'defaultContent': '', fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                  if(oData['owner_yn'] == 'Y'){
+                    var $button = $("<button>").addClass("btn btn-sm p-t-0 p-b-0")
+                      .on("click", function () {
+                        _page.mr_detail(oData['@id'], oData['group_seq'], oData['server_seq'])
+                      })
+                      .text("VIEW");
+                    $(nTd).html($button);
+                  }
+                  else{
+                    $(nTd).html('');
+                  }
+                }
+              }
+            ],
+            columnDefs: [
+              {targets: 0, orderable: false, searchable: false, checkboxes: true, className: "text-center text-middle"},
+              {targets: [4, 6], visible: false},
+              {targets: [1, 2, 3, 4, 5, 6, 7], className: "text-center text-middle"}
+            ],
+            initComplete:function(){
+              
+            }
 
 
-
+          }).columns.adjust();
         }
 
       }

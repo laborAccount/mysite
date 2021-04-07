@@ -4,15 +4,15 @@ from django.http import HttpResponse, JsonResponse, Http404
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 
-from backend.models import CmsEndpointGroup
-from backend.models import CmsManager
+from main.models import CmsEndpointGroup
+from main.models import CmsManager
 
 # api 공통
-from backend.djangoapps.common.api.views import callApi, callApiBasic, callApi_server, callApiId
-from backend.djangoapps.common.api.views import api_data_list, api_data_list_basic, api_data_list_basic_server
-from backend.djangoapps.common.api.views import request_to_json
-from backend.djangoapps.common.core.views import coreJson
-from backend.djangoapps.common.com.views import CiscoApi
+from main.djangoapps.common.api.views import callApi, callApiBasic, callApi_server, callApiId
+from main.djangoapps.common.api.views import api_data_list, api_data_list_basic, api_data_list_basic_server
+from main.djangoapps.common.api.views import request_to_json
+from main.djangoapps.common.core.views import coreJson
+from main.djangoapps.common.com.views import CiscoApi
 import asyncio
 from time import time
 from django.db import connections
@@ -79,7 +79,7 @@ def query_args_escape(**kwargs):
     return ret_dict
 
 # api 공통
-from backend.djangoapps.common.com.views import CiscoApi
+from main.djangoapps.common.com.views import CiscoApi
 import asyncio
 
 
