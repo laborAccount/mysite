@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.db import connections
 from django.http import HttpResponse, JsonResponse
 from main.djangoapps.common.util import views as TMUtility
+from django.views.decorators.csrf import csrf_exempt
 
 #공통 API
 from main.djangoapps.common.com.views import CiscoApi
@@ -22,11 +23,15 @@ logger = logging.getLogger('sys')
 # Author  : syh
 # Desc    : MeetingRoom(cospace) 관리 페이지 로드
 # History
+@csrf_exempt
 def meetingroom(request):
     context = dict()
     return render(request, 'meeting/room/meetingRoom.html', context)
 
+@csrf_exempt
 def meetingroom_list(request):
+    
+
     context = dict()
     user_role = request.session['user_role']
     user_role = request.session['user_id']

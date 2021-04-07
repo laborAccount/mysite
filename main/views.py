@@ -2,14 +2,17 @@ from django.shortcuts import render
 from django.db import connections
 from django.http import HttpResponse, JsonResponse
 from main.djangoapps.common.util import views as TMUtility
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 # main page 이동
+@csrf_exempt
 def move_main(request):
     print("--------------------------------------------------")
     print("move_main 함수")
     return render( request , 'main/main.html' )
 
+@csrf_exempt
 def notice_list(request):
     print("--------------------------------------------------")
     print("notice_list 함수")

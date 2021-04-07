@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     {% load static %}
+
+    <input type="hidden" class="hidden_csrftoken" value='${ csrf_token }'/>
     <script src="{% static '/js/jquery-3.6.0.min.js' %}"></script> 
     <script src="{% static '/js/datatable.js' %}"></script> 
   </head>
