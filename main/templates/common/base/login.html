@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <link rel="icon" type="image/png" href="/static/images/common/favicons.png"/>
+  <link rel="stylesheet" href="/static/css/common/util.css" type="text/css"/>
+  <link rel="stylesheet" href="/static/css/common/base/login.css" type="text/css"/>
+</head>
+<body>
+<div class="limiter">
+  <div class="container-login100" style="height:0px;">
+    <div class="wrap-login100 p-t-50 p-b-90">
+				<span class="login100-form-title p-b-51">
+					<img src="/static/images/common/logo_login.png" style="width: 300px;">
+				</span>
+      <div class="wrap-input100 validate-input m-b-16">
+        <input name="idBox" class="input100" type="text" id="inputId" placeholder="ID">
+        <span class="focus-input100"></span>
+      </div>
+      <div class="wrap-input100 validate-input m-b-16">
+        <input name="pwBox" class="input100" type="password" id="inputPw" placeholder="Password">
+        <span class="focus-input100"></span>
+      </div>
+      <div class="container-login100-form-btn m-t-17">
+        <button class="login100-form-btn">
+          Login
+        </button>
+      </div>
+      <div class="info"></div>
+    </div>
+  </div>
+</div>
+
+<input type="hidden" class="hidden_csrftoken" value='${ csrf_token }'></div>
+
+<script src="{% static '/js/jquery-3.6.0.min.js' %}"></script> 
+<script type="text/javascript">
+  $(document).ready(function () {
+
+    $(".login100-form-btn").on("click", function () {
+      login();
+    });
+    $("#inputPw").keyup(function (e) {
+      if (e.keyCode == 13) login();
+    });
+
+    function login() {
+      var inputId = $("#inputId").val();
+      var inputPw = $("#inputPw").val();
+      console.log("csrf -> ",$('.hidden_csrftoken').val());  
+      return;
+      $.ajax({
+        url: '/login',
+        type: "POST",
+        data: {
+          'csrfmiddlewaretoken': $('.hidden_csrftoken').val(),
+          'inputId': inputId,
+          'inputPw': inputPw
+        }
+      }).done(function (data) {
+        if ("success" == data.result) {
+          window.location = "/main";
+        }else if("valid" == data.result){
+          var ele = $("<span style='color:red;'>").text("아이디 혹은 패스워드가 일치하지 않습니다");
+          $(".info").css("display","block").html('').append(ele);
+        }
+      });
+    }
+
+  });
+</script>
+</body>
+</html>

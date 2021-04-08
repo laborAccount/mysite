@@ -10,8 +10,8 @@ from django.http import HttpResponse, JsonResponse
 from datetime import datetime
 
 # api.json
-from backend.djangoapps.common.core.views import coreJson
-from backend.djangoapps.common.core.views import api_coreJson
+from main.djangoapps.common.core.views import coreJson
+from main.djangoapps.common.core.views import api_coreJson
 
 from django.contrib import auth
 
@@ -20,7 +20,7 @@ import base64
 import hashlib
 from Cryptodome import Random
 from Cryptodome.Cipher import AES
-from main.settings import SECRET_KEY
+from mySite.settings import SECRET_KEY
 
 # hashed_password = property(get_password, set_password)
 # print(str(hashlib.sha256('asdfasdfasdfasdf'.encode('utf-8')).hexdigest()))

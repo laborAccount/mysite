@@ -7,6 +7,9 @@
     <input type="hidden" class="hidden_csrftoken" value='${ csrf_token }'/>
     <script src="{% static '/js/jquery-3.6.0.min.js' %}"></script> 
     <script src="{% static '/js/datatable.js' %}"></script> 
+    <script src="{% static '/js/kotech.js' %}"></script> 
+    <script src="{% static '/js/kotech.swal.js' %}"></script> 
+    <script src="{% static '/js/dataTables.checkboxes.js' %}"></script>
   </head>
   <body>
       <table id = "meeting_table">
@@ -29,6 +32,8 @@
 
 
   <script type="text/javascript">
+    var table_mr, table_ep, table_web, table_merge;
+
     $(document).ready(function(){
       _page = new page();
       _page.init();
@@ -43,6 +48,7 @@
 
         this.initList = function(){
           table_mr =  $("#meeting_table").DataTable({
+          dom: '<"row"<"col-sm-6"f>""<"col-sm-6 tm-btn-group text-right">">t<"row"<"col-sm-12"p>>',
           searching: true,
           paginate: true,
           pageLength: 10,
@@ -57,14 +63,13 @@
             data: {
               'csrfmiddlewaretoken': $('.hidden_csrftoken').val(),
             },
-            /* 사용될 필요없음.
-            ,
+            // 사용될 필요없음. 그러나 Views로 부터 전달받은 데이터 확인시에 유용
             dataFilter: function (data) {
               var json = jQuery.parseJSON(data);
               console.log("return JSON DATA!!! ->",json);
               return JSON.stringify(json);
             }
-            */
+            
 
           },
           columns: [
@@ -92,6 +97,7 @@
                   }
                 }
               }
+              
             ],
             columnDefs: [
               {targets: 0, orderable: false, searchable: false, checkboxes: true, className: "text-center text-middle"},
@@ -99,14 +105,125 @@
               {targets: [1, 2, 3, 4, 5, 6, 7], className: "text-center text-middle"}
             ],
             initComplete:function(){
-              
-            }
 
-
-          }).columns.adjust();
+              let btn_del = $("<button>").attr("id","btn_del")
+                                        .addClass("btn btn-outline b-danger text-danger text-up")
+                                        .text("삭제")
+                                        .on("click",function(){
+                                          _page.mr_delete();
+                                        });
+              /*
+              let btn_match = $("<button>").attr("id","btn_match")
+                                        .addClass("btn btn-outline b-success text-success m-r-2 text-up")
+                                        .text(gettext("버튼.미팅룸.동기화"))
+                                        .on("click",function(){
+                                          _page.mr_match();
+                                        });
+              */
+              let btn_add = $("<button>").attr("id","btn_add")
+                                        .addClass("btn btn-outline b-primary text-primary m-r-2 text-up")
+                                        .text("추가")
+                                        .on("click",function(){
+                                          _page.initSelectBoxGroup()
+                                          _page.dataClear();
+                                          $("#inputDiv").showInput();
+                                          $("#btn_start").addClass("deactive");
+                                        });
+              /*                            
+              let btn_prompt = $("<button>").attr("id","btn_prompt")
+                                            .addClass("btn btn-outline b-warn text-warn m-r-2 text-up")
+                                            .text(gettext("버튼.미팅룸.즉시시작"))
+                                            .on("click",function(){
+                                              _page.initSelectBoxGroup()
+                                              $("#promptDiv").showDiv();
+                              });
+              */
+              //$(".tm-btn-group").append(btn_match).append(btn_prompt).append(btn_add).append(btn_del);
+              $(".tm-btn-group").append(btn_add).append(btn_del);
+              }
+            }).columns.adjust();
         }
 
+        // (일반) 미팅룸 삭제
+        this.mr_delete = function() {
+          //$.kotech.alert({
+          //  text: "삭제",
+          //  type: "question",
+          //  callback: function (isOK) {
+          //    if (isOK['value']) {
+          _page.mr_delete_ajax();
+          //    }
+          //  }
+          //});
+        }
+        // (일반) 미팅룸 삭제 Ajax
+        this.mr_delete_ajax = function() {
+          var chk_list = [];
+          var sel_list = [];
+          var param_list = [];
+          var param = {};
+          // var ep_list = table_mr.column(0).checkboxes.selected();
+          var ep_list = table_mr.column(0).checkboxes.selected();
+
+          $.each(ep_list, function (key, value) {
+            console.log("key ---> " + key + " value ---> " + value);
+            chk_list.push(value);
+            return;
+          });
+
+          var table_data = table_mr.rows().column(0).data();
+
+          for (var j = 0; j < chk_list.length; j++) {
+            for (var i = 0; i < table_data.length; i++) {
+              if (table_data[i] == chk_list[j]) {
+                sel_list.push(i);
+                break;
+              }
+            }
+          }
+
+          for (var i = 0; i < sel_list.length; i++) {
+            param_list.push(table_mr.row(sel_list[i]).data());
+          }
+
+          var temp = {};
+          temp['data'] = param_list;
+          param['data'] = JSON.stringify(temp);
+          /*
+          $.kotech.ajax({
+            url: "/meetingroom/delete",
+            data: param,
+            callback: function (data) {
+
+              $.kotech.alert({
+                type: "success",
+                text: "common.alert.success",
+                callback: function () {
+                  $("#listDiv").showDiv();
+                  table_mr.ajax.reload();
+                }
+              });
+
+            }
+          });
+          */
+          $.ajax({
+            url: "/meetingroom/delete",
+            data : param,
+            success: function(data){
+              console.log("delete after data -->" , data);
+            }
+          });
+        }
+
+
+
+
       }
+      
+
+
+
 
     });
 

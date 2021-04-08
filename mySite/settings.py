@@ -37,8 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main.apps.MainConfig',
-    'main_2',
+    'main.apps.MainConfig'
 ]
 
 MIDDLEWARE = [
@@ -131,5 +130,9 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
     '/static/js/',
 ]
+
+CORE_APIJSON_PATH = 'main/djangoapps/common/core/api.json'
+CORE_TESTAPIJSON_PATH = 'main/djangoapps/common/core/testapi.json'
+CORE_ERRORJSON_PATH = 'main/djangoapps/common/core/error.json'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

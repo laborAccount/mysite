@@ -1,0 +1,216 @@
+<%inherit file="/common/main_base.html"/>
+<%!from django.utils.translation import ugettext as _%>
+
+<%block name="css">
+  <link rel="stylesheet" href="/static/css/main/main.css" type="text/css"/>
+</%block>
+
+<%block name="container">
+<div class="padding">
+  <!-- First Row -->
+  <div class="row">
+    <div class="col-sm-2">
+      <div class="box ani1">
+        <div class="box-header b-b b-b-red op3-red">
+          <a href="/meetingroom"><h3>${_("main.title.cospaces")}</h3></a>
+        </div>
+        <div class="box-content">
+            <div class="topheader">
+              ${_("main.content.meetingroom")}
+            </div>
+            <div id="meetingroom_total" class="box-body main01 counter topbody text-red">0</div>
+            <div class="topbottom">
+              &nbsp;
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="box ani1">
+        <div class="box-header b-b b-b-pink op3-pink">
+          <a href="/activecall"><h3>${_("main.title.calls")}</h3></a>
+        </div>
+        <div class="box-content">
+            <div class="topheader">
+              ${_("main.content.meetinginprogress")}
+            </div>
+            <div id="use_call_total" class="box-body main01 counter topbody text-pink">0</div>
+            <div class="topbottom">
+              ${_("main.content.limitcalls")} <span id="limit_call">0</span>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="box ani1">
+        <div class="box-header b-b b-b-orange op3-orange">
+          <a href="/reserve"><h3>${_("main.title.reservation")}</h3></a>
+        </div>
+        <div class="box-content">
+            <div class="topheader">
+              ${_("main.content.todayreservation")}
+            </div>
+            <div id="cur_resv_total" class="box-body main01 counter topbody text-orange">0</div>
+            <div id="reservation_total" class="topbottom">
+              ${_("main.content.totalreservation")}
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="box ani7">
+        <div class="box-header b-b b-b-dark op3-grey">
+          <a href="/statics/meeting"><h3>${_("main.title.monthlystatistics")}</h3></a>
+        </div>
+        <div class="box-content">
+          <canvas id="static_Chart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second Row -->
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="box ani3" id="reservationTableDiv">
+        <div class="box-header b-b b-b-blue-grey1 op3-blue-grey1">
+          <a href="/reserve"><h3>${_("main.title.reservation")}</h3></a>
+        </div>
+        <div id="resv_con_list" class="streamline streamline-dotted dotted-content">
+          % for x in range(5) :
+          <div class="sl-item b- dotted-item">
+            <div class="sl-content dotted-items">
+              <span class="sl-date text-muted"></span>
+              <div>
+                <span class="sl-date text-muted"></span>
+                <div>
+                  <a href="#" class="text-blue-grey3"></a>None
+                </div>
+              </div>
+            </div>
+          </div>
+          % endfor
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="box ani4">
+        <div class="box-header d-flex b-b b-b-blue-grey2 op3-blue-grey2">
+          <a href="/activecall"><h3>${_("main.title.meetinginprogress")}</h3></a>
+        </div>
+        <div id="activecall_list" class="streamline streamline-dotted dotted-content">
+          % for x in range(5) :
+          <div class="sl-item b- dotted-item">
+            <div class="sl-content dotted-items">
+              <span class="sl-date text-muted"></span>
+              <div>
+                <span class="sl-date text-muted"></span>
+                <div>
+                  <a href="#" class="text-blue-grey3"></a>None
+                </div>
+              </div>
+            </div>
+          </div>
+          % endfor
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="box ani5">
+        <div class="box-header b-b b-b-blue-grey3 op3-blue-grey3">
+          <h3>${_("main.title.recentlyterminatedmeeting")}</h3></a>
+        </div>
+        <div id="end_call_list" class="streamline streamline-dotted dotted-content">
+          % for x in range(5) :
+          <div class="sl-item b- dotted-item">
+            <div class="sl-content dotted-items">
+              <span class="sl-date text-muted"></span>
+              <div>
+                <span class="sl-date text-muted"></span>
+                <div>
+                  <a href="#" class="text-blue-grey3"></a>None
+                </div>
+              </div>
+            </div>
+          </div>
+          % endfor
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Third Row -->
+  <div class="row">
+    <div class="col-sm-2">
+      <div class="box ani6">
+        <div class="box-header b-b b-b b-b-accent op3-accent">
+          <a href="/status/system"><h3>${_("main.title.activecall")}</h3><a/>
+        </div>
+        <div class="box-content">
+          <canvas id="activeCall_Chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-2">
+      <div class="box ani7">
+        <div class="box-header b-b b-b b-b-accent op3-accent">
+          <a href="/status/system"><h3>${_("main.title.calllegs")}</h3></a>
+        </div>
+        <div class="box-content">
+          <canvas id="callLeg_Chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-2">
+      <div class="box ani7">
+        <div class="box-header b-b b-b b-b-warn op3-warn">
+          <a href="/status/system"><h3>${_("main.title.videooutgoing")}</h3></a>
+        </div>
+        <div class="box-content">
+          <canvas id="videoOut_Chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-2">
+      <div class="box ani7">
+        <div class="box-header b-b b-b b-b-warn op3-warn">
+          <a href="/status/system"><h3>${_("main.title.videoincoming")}</h3></a>
+        </div>
+        <div class="box-content">
+          <canvas id="videoIn_Chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-2">
+      <div class="box ani7">
+        <div class="box-header b-b b-b b-b-primary op3-blue">
+          <a href="/status/system"><h3>${_("main.title.audiooutgoing")}</h3></a>
+        </div>
+        <div class="box-content">
+          <canvas id="audioOut_Chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-2">
+      <div class="box ani7">
+        <div class="box-header b-b b-b b-b-primary op3-blue">
+          <a href="/status/system"><h3>${_("main.title.audioincoming")}</h3></a>
+        </div>
+        <div class="box-content">
+          <canvas id="audioIn_Chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</%block>
+
+<%block name="js">
+<script src="/static/js/main/main.js"></script>
+</%block>
