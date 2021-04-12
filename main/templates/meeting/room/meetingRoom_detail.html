@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    {% load static %}
+
+    <input type="hidden" class="hidden_csrftoken" value='${ csrf_token }'/>
+    <script src="{% static '/js/jquery-3.6.0.min.js' %}"></script> 
+    <script src="{% static '/js/datatable.js' %}"></script> 
+    <script src="{% static '/js/kotech.js' %}"></script> 
+    <script src="{% static '/js/kotech.swal.js' %}"></script> 
+    <script src="{% static '/js/dataTables.checkboxes.js' %}"></script>
+    
+  </head>
+  <body>
+      <table id = "meetingroom_detail">
+        <tbody id = "meetingroom_detail_body">
+
+
+        </tbody>
+      </table>
+  </body>
+
+
+  <script type="text/javascript">
+    var table_mr, table_ep, table_web, table_merge;
+
+    $(document).ready(function(){
+      
+      
+      let $_tr = $("<tr></tr>");
+      let $_td_1 = $("<td> 미팅룸 이름* </td>");
+      let $_td_2 = $("<td> <input type='text' name='mr_name' data-key='name' data-validation='required|maxlength(100)'> </td>"); 
+
+      $_tr.append($_td_1);
+      $_tr.append($_td_2);
+
+      $("#meetingroom_detail_body").append($_tr);
+
+      let $_tr_call= $("<tr></tr>");
+      let $_td_call_1 = $("<td> Call ID* </td>");
+      let $_td_call_2 = $("<td> <input type='text' name='mr_callId' data-key='callId' data-validation='required|maxlength(100)'> </td>"); 
+
+      $_tr_call.append($_td_call_1);
+      $_tr_call.append($_td_call_2);
+
+      $("#meetingroom_detail_body").append($_tr_call);
+
+      
+      let $_tr_Uri= $("<tr></tr>");
+      let $_td_Uri_1 = $("<td> Uri </td>");
+      let $_td_Uri_2 = $("<td> <input type='text' name='mr_uri' data-key='uri' data-validation='maxlength(100)' > </td>"); 
+
+      $_tr_Uri.append($_td_Uri_1);
+      $_tr_Uri.append($_td_Uri_2);
+
+      $("#meetingroom_detail_body").append($_tr_Uri);
+
+      let $_tr_Password= $("<tr></tr>");
+      let $_td_Password_1 = $("<td> 미팅룸 패스워드 </td>");
+      let $_td_Password_2 = $("<td> <input type='text' name='mr_passcode' data-key='passcode' data-validation='maxlength(100)'> </td>"); 
+
+      $_tr_Password.append($_td_Password_1);
+      $_tr_Password.append($_td_Password_2);
+    
+      $("#meetingroom_detail_body").append($_tr_Password);
+
+      let $_tr_layout = $("<tr></tr>");
+      let $_td_layout_1 = $("<td> 기본 레이아웃 </td>");
+      let $_td_layout_2 = $("<td>  </td>"); 
+      let $_select_layout = $("<select id='mr_defaultLayout' data-key='defaultLayout'></select>");
+      let $_option = $("<option value>Not Set</option>");
+      let $_option2 = $('<option value="allEqual">AllEqual</option>');
+
+      $_select_layout.append($_option);
+      $_select_layout.append($_option2);
+
+      $_td_layout_2.append($_select_layout);
+
+      $_tr_layout.append($_td_layout_1);
+      $_tr_layout.append($_td_layout_2);
+
+      $("#meetingroom_detail_body").append($_tr_layout);
+
+      let $_group_name  = $("<tr></tr>");
+      let $_td_group_1 = $("<td>그룹 이름</td>");
+      let $_td_group_2 = $("<td></td>"); 
+      let $_select_group = $("<select id='mr_group_select' data-key='group_seq'></select>");
+      let $_group_option = $("<option value='0'>cluster1</option>");
+
+      $_select_group.append($_group_option);
+      $_td_group_2.append($_select_group);
+      $_group_name.append($_td_group_1);
+      $_group_name.append($_td_group_2);
+
+      $("#meetingroom_detail_body").append($_group_name);
+
+      let $_server_name  = $("<tr></tr>");
+      let $_td_server_1 = $("<td>서버 이름</td>");
+      let $_td_server_2 = $("<td></td>"); 
+      let $_server_select = $("<select id='mr_serverName_select' data-key='server_seq'></select>");
+      let $_server_option = $("<option value='0'>api_server_1</option>");
+      let $_server_option_2 = $("<option value='1'>api_server_1</option>");
+      $_server_select.append($_server_option);
+      $_server_select.append($_server_option_2);
+      $_td_server_2.append($_server_select);
+      $_server_name.append($_td_server_1);
+      $_server_name.append($_td_server_2);
+      $("#meetingroom_detail_body").append($_server_name);
+
+      $_div = $("<div></div>");
+      $_save_button = $("<button id='btn_save'>저장</button>");
+      $_div.append($_save_button);
+
+
+      $_hidden_Pane_div = $("<div style='display:none'></div>");
+      $_hidden_panePlacementSelfPaneMode = $('<select class="form-control custom-select" id="mr_panePlacementSelfPaneMode" data-key="panePlacementSelfPaneMode"></select>');
+      $_panePlacementSelfPaneMode_option1 = $('<option value="self">Self</option>');
+      $_panePlacementSelfPaneMode_option2 = $('<option value="skip">Skip</option>');
+      $_panePlacementSelfPaneMode_option3 = $('<option value="blank">Blank</option>');
+      $_panePlacementSelfPaneMode_option4 = $('<option value="">None</option>');
+      
+      $_hidden_panePlacementSelfPaneMode.append($_panePlacementSelfPaneMode_option1);
+      $_hidden_panePlacementSelfPaneMode.append($_panePlacementSelfPaneMode_option2);        
+      $_hidden_panePlacementSelfPaneMode.append($_panePlacementSelfPaneMode_option3);
+      $_hidden_panePlacementSelfPaneMode.append($_panePlacementSelfPaneMode_option4);
+      $_hidden_Pane_div.append($_hidden_panePlacementSelfPaneMode);
+      $("#meetingroom_detail_body").append($_hidden_Pane_div);
+
+      $_hidden_div_mr_panePlacementHighestImportance = $("<div style='display:none'></div>");
+      $_hidden_mr_panePlacementHighestImportance = $('<input type="text" class="form-control" id="mr_panePlacementHighestImportance" placeholder="Pane Placement Highest Importance" data-key="panePlacementHighestImportance">');
+      $_hidden_div_mr_panePlacementHighestImportance.append($_hidden_mr_panePlacementHighestImportance);
+      $("#meetingroom_detail_body").append($_hidden_div_mr_panePlacementHighestImportance);
+
+      $_hidden_div_secondary_uri =  $("<div style='display:none'></div>");
+      $_hidden_secondary_uri = $('<input type="text" class="form-control" id="mr_secondaryUri" placeholder="Secondary Uri" data-key="secondaryUri">');
+      $_hidden_div_secondary_uri.append($_hidden_secondary_uri);
+      $("#meetingroom_detail_body").append($_hidden_div_secondary_uri);
+
+      $_hidden_div_template_select = $("<div style='display:none'></div>");
+      $_hidden_template_select =  $('<select id="mr_template_select" class="form-control custom-select tm-template" data-key="template"><option value="">None</option><option value="55">Kotech_Template</option><option value="97">testtemplate</option><option value="98">layout_template</option><option value="100">12341234</option></select>');
+      $_hidden_div_template_select.append($_hidden_template_select);
+      $("#meetingroom_detail_body").append($_hidden_div_template_select);
+
+      $_hidden_cdrTag_div = $("<div style='display:none'></div>");
+      $_hidden_cdrTag_input = $('<input type="text" class="form-control" id="mr_cdrTag" placeholder="CDR Tag" data-key="cdrTag">');
+      $_hidden_cdrTag_div.append($_hidden_cdrTag_input);
+      $("#meetingroom_detail_body").append($_hidden_cdrTag_div);
+
+      $_hidden_mr_ownerJid_div = $("<div style='display:none'></div>");
+      $_hidden_mr_ownerJid_input = $('<input type="text" class="form-control" id="mr_ownerJid" placeholder="Owner JID" data-key="ownerJid">');
+      $_hidden_mr_ownerJid_div.append($_hidden_mr_ownerJid_input);
+      $("#meetingroom_detail_body").append($_hidden_mr_ownerJid_div);
+
+      $_hidden_mr_streamUrl_div = $("<div style='display:none'></div>");
+      $_hidden_mr_streamUrl_input = $('<input type="text" class="form-control" id="mr_streamUrl" placeholder="Stream URL" data-key="streamUrl">');
+      $_hidden_mr_streamUrl_div.append($_hidden_mr_streamUrl_input);
+      $("#meetingroom_detail_body").append($_hidden_mr_streamUrl_div);
+
+      $_hidden_mr_ownerAdGuid_div = $("<div style='display:none'></div>");
+      $_hidden_mr_ownerAdGuid_input = $('<input type="text" class="form-control" id="mr_ownerAdGuid" placeholder="Owner AD Guid" data-key="ownerAdGuid">');
+      $_hidden_mr_ownerAdGuid_div.append($_hidden_mr_ownerAdGuid_input);
+      $("#meetingroom_detail_body").append($_hidden_mr_ownerAdGuid_div);
+
+      $_hidden_mr_meetingScheduler_div = $("<div style='display:none'></div>");
+      $_hidden_mr_meetingScheduler_input = $('<input type="text" class="form-control" id="mr_meetingScheduler" placeholder="Meeting Scheduler" data-key="meetingScheduler">');
+      $_hidden_mr_meetingScheduler_div.append($_hidden_mr_meetingScheduler_input);
+      $("#meetingroom_detail_body").append($_hidden_mr_meetingScheduler_div);
+
+      $_hidden_div_mmid = $("<div style='display:none'></div>");
+      $_hidden_mmid = $('<input type="text" class="form-control" id="mm_id" data-key="@id">');
+      $_hidden_div_mmid.append($_hidden_mmid);
+      $("#meetingroom_detail_body").append($_hidden_div_mmid);
+
+      $('body').append($_div);
+
+      $("#btn_save").on("click", function () {
+        mr_save();
+      });
+
+      mr_save = function() {
+
+      if (!$("#inputDiv").dataValidations()){
+        return false;
+      }
+
+      var pUrl = "/meetingroom/save";
+      var param = $("#meetingroom_detail").getElementByJson();
+
+      console.log("param!!! -----> ", param);
+      
+      /*
+      if (param['@id'] != "") {
+        pUrl = "/meetingroom/update";
+      }
+      */
+      $.kotech.ajax({
+        url: pUrl,
+        data: param,
+        callback: function (data) {
+
+          //$.kotech.alert({
+          //  type: "success",
+          //  text: "common.alert.success",
+          //  callback: function () {
+          //    $("#listDiv").showDiv();
+          //    table_mr.ajax.reload();
+          //  }
+          //});
+          location.href = "/meetingroom";
+          
+        }
+      });
+
+    }
+
+
+
+
+
+
+
+  });
+
+
+
+
+  </script>
+
+</html>

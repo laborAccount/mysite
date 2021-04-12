@@ -61,8 +61,8 @@
 			case "question":
 				defaultOption['title'] = "QUESTION";
 				defaultOption['showCancelButton'] = true;
-				defaultOption['confirmButtonText'] = gettext('common.alert.confirm');
-				defaultOption['cancelButtonText'] = gettext('common.alert.cancel');
+				defaultOption['confirmButtonText'] = '확인';
+				defaultOption['cancelButtonText'] = '취소';
 				defaultOption['allowOutsideClick'] = false;
 				defaultOption['allowEscapeKey'] = false;
 				break;
@@ -105,8 +105,9 @@
 							mergeOption[key] = interpolate(tempText,tempList);
 														
 						}else{
+							console.log("mergeOption[key] before result==>", mergeOption[key]);
 							mergeOption[key] = gettext(mergeOption[key]);
-							
+							console.log("mergeOption[key] after result==>", mergeOption[key]);
 						}
 					}
 				}

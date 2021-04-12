@@ -21,7 +21,7 @@ import hashlib
 from Cryptodome import Random
 from Cryptodome.Cipher import AES
 from mySite.settings import SECRET_KEY
-
+from django.views.decorators.csrf import csrf_exempt
 # hashed_password = property(get_password, set_password)
 # print(str(hashlib.sha256('asdfasdfasdfasdf'.encode('utf-8')).hexdigest()))
 # print(str(hashlib.sha256('avav'.encode('utf-8')).hexdigest()))
@@ -65,13 +65,14 @@ def password_sha(passwd=None):
     passwd = str(hashlib.sha256(passwd.encode('utf-8')).hexdigest())
     return passwd
 
+@csrf_exempt
 def login(request):
     context = dict()
     if "user_id" in dict(request.session):
         return redirect('/main')
     return render(request, 'common/base/login.html', context)
 
-
+@csrf_exempt
 def login_ajax(request):
     context = dict()
     inputId = request.POST.get('inputId')

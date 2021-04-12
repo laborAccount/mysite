@@ -42,8 +42,6 @@
 
         this.init = function(){
           _page.initList();
-
-
         }
 
         this.initList = function(){
@@ -55,7 +53,6 @@
           processing: true,
           serverSide: true,
           ordering: false,
-          
           ajax: {
             url: "/meetingroom/list", //데이터를 가져올 url
             type: "POST",
@@ -69,8 +66,6 @@
               console.log("return JSON DATA!!! ->",json);
               return JSON.stringify(json);
             }
-            
-
           },
           columns: [
               {data: "@id",fnCreatedCell:function(nTd, sData, oData, iRow, iCol){
@@ -97,7 +92,6 @@
                   }
                 }
               }
-              
             ],
             columnDefs: [
               {targets: 0, orderable: false, searchable: false, checkboxes: true, className: "text-center text-middle"},
@@ -112,67 +106,144 @@
                                         .on("click",function(){
                                           _page.mr_delete();
                                         });
-              /*
+              
               let btn_match = $("<button>").attr("id","btn_match")
                                         .addClass("btn btn-outline b-success text-success m-r-2 text-up")
-                                        .text(gettext("버튼.미팅룸.동기화"))
+                                        .text("동기화")
                                         .on("click",function(){
                                           _page.mr_match();
                                         });
-              */
+                                        
               let btn_add = $("<button>").attr("id","btn_add")
                                         .addClass("btn btn-outline b-primary text-primary m-r-2 text-up")
                                         .text("추가")
                                         .on("click",function(){
-                                          _page.initSelectBoxGroup()
-                                          _page.dataClear();
-                                          $("#inputDiv").showInput();
-                                          $("#btn_start").addClass("deactive");
+                                        //  _page.initSelectBoxGroup()
+                                        //  _page.dataClear();
+                                        //  $("#inputDiv").showInput();
+                                        //  $("#btn_start").addClass("deactive");
+                                          console.log("추가 버튼 클릭 !!!");
+                                          _page.mr_insert_page_move(this);
+
                                         });
-              /*                            
+                                          
               let btn_prompt = $("<button>").attr("id","btn_prompt")
                                             .addClass("btn btn-outline b-warn text-warn m-r-2 text-up")
-                                            .text(gettext("버튼.미팅룸.즉시시작"))
+                                            .text("즉시시작")
                                             .on("click",function(){
                                               _page.initSelectBoxGroup()
                                               $("#promptDiv").showDiv();
                               });
-              */
-              //$(".tm-btn-group").append(btn_match).append(btn_prompt).append(btn_add).append(btn_del);
-              $(".tm-btn-group").append(btn_add).append(btn_del);
+              
+              $(".tm-btn-group").append(btn_match).append(btn_prompt).append(btn_add).append(btn_del);
+              //$(".tm-btn-group").append(btn_add).append(btn_del);
               }
             }).columns.adjust();
+
+            $('#table_mr_filter.dataTables_filter input[type=search]').unbind().bind('keyup', function (e) {
+              if (e.keyCode == 13) {
+                table_mr.search(this.value).draw();
+              }
+            });
+
+            $(".table_mr > thead > tr > th > input[type='checkbox']").parent().html($.dtcheckboxbs4head());
+
+        }
+        
+        this.mr_insert_page_move = function(){
+            console.log("mr_insert_page_move 내부");
+            $("#btn_add").attr("onclick", "location.href='meetingroom/detail'");
+            $("#btn_add").submit();
+        }
+
+
+        // (일반) 미팅 상세보기
+        this.mr_detail = function(id) {
+          _page.dataClear();
+          
+          var param = {};
+          param['id'] = id;
+          
+          $.kotech.ajax({
+            url: '/meetingroom/detail',
+            data: param,
+            callback: function (data) {
+
+              $("#btn_start").removeClass("deactive");
+              $("#inputDiv").showInput();
+
+              var ret = data.data;
+              $("#inputDiv").bindJsonToElement(ret);
+
+            }
+          });
+        }
+
+        // (일반) 미팅 저장
+        this.mr_save = function() {
+
+          if (!$("#inputDiv").dataValidations()){
+            return false;
+          }
+
+          var pUrl = "/meetingroom/create";
+          var param = $("#inputDiv").getElementByJson();
+
+          if (param['@id'] != "") {
+            pUrl = "/meetingroom/update";
+          }
+
+          $.kotech.ajax({
+            url: pUrl,
+            data: param,
+            callback: function (data) {
+
+              $.kotech.alert({
+                type: "success",
+                text: "common.alert.success",
+                callback: function () {
+                  $("#listDiv").showDiv();
+                  table_mr.ajax.reload();
+                }
+              });
+
+            }
+          });
+
         }
 
         // (일반) 미팅룸 삭제
         this.mr_delete = function() {
           //$.kotech.alert({
-          //  text: "삭제",
+          //  text: "common.alert.warning.delmassage.title",
           //  type: "question",
           //  callback: function (isOK) {
           //    if (isOK['value']) {
-          _page.mr_delete_ajax();
+                _page.mr_delete_ajax();
           //    }
           //  }
           //});
         }
+    
+
         // (일반) 미팅룸 삭제 Ajax
         this.mr_delete_ajax = function() {
           var chk_list = [];
           var sel_list = [];
           var param_list = [];
           var param = {};
-          // var ep_list = table_mr.column(0).checkboxes.selected();
           var ep_list = table_mr.column(0).checkboxes.selected();
 
           $.each(ep_list, function (key, value) {
             console.log("key ---> " + key + " value ---> " + value);
             chk_list.push(value);
-            return;
+            
           });
 
           var table_data = table_mr.rows().column(0).data();
-
+          console.log("chk_list===>>>>>>", chk_list);
+          console.log("table_data ===>>>>>" , table_data);
+      
           for (var j = 0; j < chk_list.length; j++) {
             for (var i = 0; i < table_data.length; i++) {
               if (table_data[i] == chk_list[j]) {
@@ -189,43 +260,32 @@
           var temp = {};
           temp['data'] = param_list;
           param['data'] = JSON.stringify(temp);
-          /*
+
           $.kotech.ajax({
             url: "/meetingroom/delete",
             data: param,
             callback: function (data) {
-
-              $.kotech.alert({
-                type: "success",
-                text: "common.alert.success",
-                callback: function () {
-                  $("#listDiv").showDiv();
+              console.log("return data --> ", data);
+              
+              //$.kotech.alert({
+              //  type: "success",
+              //  text: "common.alert.success",
+              //  callback: function () {
+              //    $("#listDiv").showDiv();
                   table_mr.ajax.reload();
-                }
-              });
+              //  }
+              //});
+              
+            }
+          });
 
-            }
-          });
-          */
-          $.ajax({
-            url: "/meetingroom/delete",
-            data : param,
-            success: function(data){
-              console.log("delete after data -->" , data);
-            }
-          });
         }
-
-
-
-
-      }
       
-
-
-
-
+      }
+    
     });
+
+
 
 
   </script>
