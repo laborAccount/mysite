@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^meetingroom/list$', meetingroom_view.meetingroom_list, name='meetingroom_list'),
     url(r'^meetingroom/detail$', meetingroom_view.meetingroom_detail, name='meetingroom_detail'),
     url(r'^meetingroom/save$', meetingroom_view.meetingroom_save, name='meetingroom_save'),
+    url(r'^meetingroom/update$', meetingroom_view.meetingroom_update, name='meetingroom_update'),
     url(r'^meetingroom/delete$', meetingroom_view.meetingroom_delete, name='meetingroom_delete')
 
 ]

@@ -223,7 +223,79 @@ def meetingroom_delete(request):
 
 @csrf_exempt
 def meetingroom_detail(request):
-    return render(request, 'meeting/room/meetingRoom_detail.html')
+    '''
+        기획 부터가 잘못된 메소드, cisco 프로젝트 처럼하려면 상세 페이지를 따로 만들지 말고 list 페이지에 meetingroom의 상세 정보를 
+        표시할 수 있도록 작성했어야 했다.
+        --> 회의실 정보를 상세페이지로 전달하려면 render를 통해 페이지 이동과 함께 context를 전달해야하는데.
+        결국은 {{ context.값 }} 을 이용하는 형태로 데이터를 뿌려줘야하는 기획의도와 다른 불상사가 발생하였다.
+    '''
+
+    context = dict()
+    cospace_id = request.GET.get('id')
+    print("cospace_id -----> ", cospace_id)
+    
+    if cospace_id is not None :
+        try:
+            retDict = dict()
+            
+
+            q_dict = TMUtility.query_args_escape(cospace_id=cospace_id)
+            query = '''
+                SELECT
+                template_seq, group_seq, server_seq
+                FROM cms_cospace
+                WHERE cospace_id = '{cospace_id}'
+                AND delete_yn = 'N'
+            '''.format(**q_dict)
+            query_list = TMUtility.get_query_to_list(query)
+
+
+            print("query list-->" , query_list)
+            if len(query_list) > 0 :
+                api_list = coreJson()['api']
+                ca = CiscoApi()
+                ca.setGroupSeq(query_list[0]['group_seq'])
+                ca.setServerSeqData(query_list[0]['server_seq'])
+                t_cospace = ca.comCallAPI('cospaces/{id}'.format(id=cospace_id),'GET')
+
+                if t_cospace['status'] == 200:
+                    retDict = t_cospace['body']['coSpace']
+                    retDict['template'] = query_list[0]['template_seq']
+                    retDict['server_seq'] = query_list[0]['server_seq']
+                    retDict['group_seq'] = query_list[0]['group_seq']
+
+                    context['result'] = "success"
+                    context['data'] = retDict
+
+                else:
+                    context['result'] = "cisco_error"
+                    context['cisco_error'] = t_cospace['error']
+
+            else :
+                context['result'] = "server_warning"
+                context['tm_warning'] = "No Result"
+
+        except BaseException as e:
+
+            trace_back = traceback.format_exc()
+            message = str(e)+ " " + str(trace_back)
+            logger.error("@@@ meetingroom_detail @@@")
+            logger.error(message)
+
+            context['result'] = "server_err"
+            context['tm_error'] = str(type(e).__name__)
+            context['tm_error_detail'] = message
+
+        finally:
+            print("context Data --> ", context)
+            context['data']['id'] = context['data']['@id']
+            return render(request, 'meeting/room/meetingRoom_detail.html',context)
+    else :
+        return render(request, 'meeting/room/meetingRoom_detail.html')
+
+
+
+
 @csrf_exempt
 def meetingroom_save(request):
 
@@ -236,7 +308,7 @@ def meetingroom_save(request):
             queryDict = request.POST
             
             print("meeting_ROOM user_id ==>>>> ", user_id)
-            print("meeting_ROOM queryDict ==>>>> ", queryDict)
+            #print("meeting_ROOM queryDict ==>>>> ", queryDict)
 
             for key,value in enumerate(queryDict):
                 print("enumerate(queryDict) value ---->>> ", value)
@@ -244,7 +316,7 @@ def meetingroom_save(request):
 
             template = param_dict['template']
             print("meeting_ROOM template ==>>>> ", template)
-            
+
             if template != '':
                 template_data = CmsTemplate.objects.get(seq=template)
                 param_dict['callLegProfile'] = template_data.calllegprofile
@@ -273,12 +345,12 @@ def meetingroom_save(request):
                                           regist_date=datetime.datetime.now(),
                                           regist_id=user_id)
                 context['result'] = "success"
-                TMUtility.tm_event_log(request,p_uri="/meetingroom/create", p_data=json.dumps(param_dict,ensure_ascii=False), success_yn="Y", p_type="ajax", p_comment="회의실 생성(게스트)")
+                TMUtility.tm_event_log(request,p_uri="/meetingroom/save", p_data=json.dumps(param_dict,ensure_ascii=False), success_yn="Y", p_type="ajax", p_comment="회의실 생성(게스트)")
                 
             else:
                 context['result'] = "cisco_error"
                 context['cisco_error'] = t_cospace['error']
-                TMUtility.tm_event_log(request,p_uri="/meetingroom/create", p_data=json.dumps(param_dict,ensure_ascii=False), success_yn="N", p_type="ajax", p_comment="회의실 생성(게스트)", p_error=context['cisco_error'])
+                TMUtility.tm_event_log(request,p_uri="/meetingroom/save", p_data=json.dumps(param_dict,ensure_ascii=False), success_yn="N", p_type="ajax", p_comment="회의실 생성(게스트)", p_error=context['cisco_error'])
 
     except BaseException as e:
 
@@ -290,7 +362,81 @@ def meetingroom_save(request):
         context['result'] = "server_err"
         context['tm_error'] = str(type(e).__name__)
         context['tm_error_detail'] = message
-        TMUtility.tm_event_log(request,p_uri="/meetingroom/create", p_data=json.dumps(param_dict,ensure_ascii=False), success_yn="N", p_type="ajax", p_comment="회의실 생성(게스트)", p_error=context['tm_error'])
+        TMUtility.tm_event_log(request,p_uri="/meetingroom/save", p_data=json.dumps(param_dict,ensure_ascii=False), success_yn="N", p_type="ajax", p_comment="회의실 생성(게스트)", p_error=context['tm_error'])
+
+    finally:
+        return JsonResponse(context)
+
+@csrf_exempt
+def meetingroom_update(request):
+    context = dict()
+    param_dict = dict()
+    print("update !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    try:
+        if request.is_ajax():
+            user_id = request.session['user_id']
+            queryDict = request.POST
+
+            for key,value in enumerate(queryDict):
+                print("enumerate(queryDict) value ---->>> ", value)
+                param_dict[value] = request.POST.get(value)
+
+            group_seq = int(param_dict['group_seq'])
+            server_seq = int(param_dict['server_seq'])
+            template = param_dict['template']
+            cospace_id = param_dict['@id']
+            cospace_id = param_dict['id']
+            if template != '':
+                
+                template_data = CmsTemplate.objects.get(seq=template)
+                param_dict['callLegProfile'] = template_data.calllegprofile
+                param_dict['callProfile'] = template_data.callprofile
+            else:
+                param_dict['callLegProfile'] = ''
+                param_dict['callProfile'] = ''
+
+            del param_dict['csrfmiddlewaretoken']
+            del param_dict['@id']
+            del param_dict['template']
+
+            api_list = coreJson()['api']
+            ca = CiscoApi()
+            ca.setGroupSeq(group_seq)
+            ca.setServerSeqData(server_seq)
+
+            t_cospace = ca.comCallAPI('cospaces/{cospace_id}'.format(cospace_id=cospace_id),'PUT',jsonParam=param_dict)
+            print("t_cospace ? ->>>>", t_cospace)
+            if 200==t_cospace['status']:
+
+                print("doing update????????")
+                CmsCospace.objects.filter(cospace_id = cospace_id
+                                 ).update(name=param_dict['name'],
+                                          uri=param_dict['uri'],
+                                          call_id=param_dict['callId'],
+                                          passcode=param_dict['passcode'],
+                                          template_seq=template,
+                                          group_seq=group_seq,
+                                          server_seq=server_seq,
+                                          modify_id = user_id)
+
+                context['result'] = "success"
+                TMUtility.tm_event_log(request,p_uri="/meetingroom/update", p_data=json.dumps(param_dict,ensure_ascii=False), success_yn="Y", p_type="ajax", p_comment="회의실 수정")
+            else:
+                context['result'] = "cisco_error"
+                context['cisco_error'] = t_cospace['error']
+                TMUtility.tm_event_log(request,p_uri="/meetingroom/update", p_data=json.dumps(param_dict,ensure_ascii=False), success_yn="N", p_type="ajax", p_comment="회의실 수정", p_error=context['cisco_error'])
+
+    except BaseException as e:
+
+        trace_back = traceback.format_exc()
+        message = str(e)+ " " + str(trace_back)
+        logger.error("@@@ meetingroom_update @@@")
+        logger.error(message)
+
+        context['result'] = "server_err"
+        context['tm_error'] = str(type(e).__name__)
+        context['tm_error_detail'] = message
+        TMUtility.tm_event_log(request,p_uri="/meetingroom/update",p_data=json.dumps(param_dict,ensure_ascii=False),success_yn="N",p_type="ajax", p_comment="회의실 수정", p_error=context['tm_error'])
 
     finally:
         return JsonResponse(context)

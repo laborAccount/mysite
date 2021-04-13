@@ -159,11 +159,14 @@
 
         // (일반) 미팅 상세보기
         this.mr_detail = function(id) {
-          _page.dataClear();
+          //_page.dataClear();
           
           var param = {};
           param['id'] = id;
-          
+          console.log("detail Param!!! --> ",id);
+         
+          location.href = "/meetingroom/detail?id=" + id;
+          /*
           $.kotech.ajax({
             url: '/meetingroom/detail',
             data: param,
@@ -177,6 +180,7 @@
 
             }
           });
+          */
         }
 
         // (일반) 미팅 저장

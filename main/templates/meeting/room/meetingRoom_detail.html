@@ -24,9 +24,70 @@
 
   <script type="text/javascript">
     var table_mr, table_ep, table_web, table_merge;
-
     $(document).ready(function(){
+
+      init_table();
+      //var object_context = JSON.parse("{{context}}");
+      console.log("context info ==> ", "{{data}}");
+      //var object_context = "{{result}}"
+      //console.log("data -->", JSON.stringify('{{data}}'));
+
+      setting_info();
+
+      $("#btn_save").on("click", function () {
+        mr_save();
+      });
+
+      mr_save = function() {
+
+      if (!$("#inputDiv").dataValidations()){
+        return false;
+      }
+
+      var pUrl = "/meetingroom/save";
+      var param = $("#meetingroom_detail").getElementByJson();
+      var id_val = "{{data.id}}";
+      console.log("id 값  --> ", '{{data.id}}');
+      //return;
+      if ('{{data.id}}' != "") {
+        pUrl = "/meetingroom/update";
+      }
       
+      $.kotech.ajax({
+        url: pUrl,
+        data: param,
+        callback: function (data) {
+
+          //$.kotech.alert({
+          //  type: "success",
+          //  text: "common.alert.success",
+          //  callback: function () {
+          //    $("#listDiv").showDiv();
+          //    table_mr.ajax.reload();
+          //  }
+          //});
+          location.href = "/meetingroom";
+          
+        }
+      });
+
+    }
+
+  });
+
+  function setting_info(){
+    $("input[name='mr_name']").val("{{data.name}}");
+    $("input[name='mr_callId']").val("{{data.callId}}");
+    $("input[name='mr_uri']").val("{{data.uri}}");
+    $("input[name='mr_passcode']").val("{{data.passcode}}");
+    $("input[name='mr_defaultLayout']").val("{{data.defaultLayout}}");
+    $("input[name='mr_serverName_select']").val("{{data.server_seq}}");
+    $("#mm_id2").val("{{data.id}}");
+
+  }
+
+
+  function init_table(){
       
       let $_tr = $("<tr></tr>");
       let $_td_1 = $("<td> 미팅룸 이름* </td>");
@@ -108,10 +169,7 @@
       $_server_name.append($_td_server_2);
       $("#meetingroom_detail_body").append($_server_name);
 
-      $_div = $("<div></div>");
-      $_save_button = $("<button id='btn_save'>저장</button>");
-      $_div.append($_save_button);
-
+      
 
       $_hidden_Pane_div = $("<div style='display:none'></div>");
       $_hidden_panePlacementSelfPaneMode = $('<select class="form-control custom-select" id="mr_panePlacementSelfPaneMode" data-key="panePlacementSelfPaneMode"></select>');
@@ -172,57 +230,16 @@
       $_hidden_div_mmid.append($_hidden_mmid);
       $("#meetingroom_detail_body").append($_hidden_div_mmid);
 
+      $_hidden_div_mmid2 = $("<div style='display:none'></div>");
+      $_hidden_mmid2 = $('<input type="text" class="form-control" id="mm_id2" data-key="id">');
+      $_hidden_div_mmid2.append($_hidden_mmid2);
+      $("#meetingroom_detail_body").append($_hidden_div_mmid2);
+
+      $_div = $("<div></div>");
+      $_save_button = $("<button id='btn_save'>저장</button>");
+      $_div.append($_save_button);
       $('body').append($_div);
-
-      $("#btn_save").on("click", function () {
-        mr_save();
-      });
-
-      mr_save = function() {
-
-      if (!$("#inputDiv").dataValidations()){
-        return false;
-      }
-
-      var pUrl = "/meetingroom/save";
-      var param = $("#meetingroom_detail").getElementByJson();
-
-      console.log("param!!! -----> ", param);
-      
-      /*
-      if (param['@id'] != "") {
-        pUrl = "/meetingroom/update";
-      }
-      */
-      $.kotech.ajax({
-        url: pUrl,
-        data: param,
-        callback: function (data) {
-
-          //$.kotech.alert({
-          //  type: "success",
-          //  text: "common.alert.success",
-          //  callback: function () {
-          //    $("#listDiv").showDiv();
-          //    table_mr.ajax.reload();
-          //  }
-          //});
-          location.href = "/meetingroom";
-          
-        }
-      });
-
     }
-
-
-
-
-
-
-
-  });
-
-
 
 
   </script>
